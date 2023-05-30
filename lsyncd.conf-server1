@@ -1,0 +1,32 @@
+----
+ -- User configuration file for lsyncd.
+ --
+ -- Simple example for default rsync, but executing moves through on the target.
+ --
+ -- For more examples, see /usr/share/doc/lsyncd*/examples/
+ --
+ -- sync{default.rsyncssh, source="/var/www/html", host="localhost", targetdir="/tmp/htmlcopy/"}
+
+settings {
+        logfile = "/var/log/lsyncd.log", -- Sets the log file
+        statusFile = "/var/log/lsyncd-status.log" -- Sets the status log file
+ }
+ sync{
+        default.rsyncssh, -- uses the rsyncssh defaults Take a look here: https://github.com/axkibe/lsyncd/blob/master/default-rsyncssh.lua
+        delete = false, -- Doesn't delete files on the remote host eventho they're deleted at the source. This might be beneficial for some not for others
+        source="/root/source1", -- Your source directory to watch
+        host="root@172.16.10.132", -- The remote host (use hostname or IP)
+        exclude={"/storage"}, -- To exclude file & folder (not sync)
+        targetdir="/root/source2/", -- the target dir on remote host, keep in mind this is absolute path
+ rsync = {
+        archive = true, -- use the archive flag in rsync
+        perms = true, -- Keep the permissions
+        owner = true, -- Keep the owner
+        _extra = {"-a"}, -- Sometimes permissions and owners isn't copied correctly so the _extra can be used for any flag in rsync
+        },
+ delay = 5, -- We want to delay the syncing for 5 seconds so we queue up the events
+ maxProcesses = 1, -- We only want to use a maximum of 4 rsync processes at same time
+ ssh = {
+        port = 22 -- This section allows configuration for ssh specific stuff such as a different port
+        }
+ }
