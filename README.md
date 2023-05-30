@@ -37,7 +37,7 @@ mkdir source1
 mkdir source2
 ```
 
-# setup file config
+# setup file config on 2 server
 ```bash
 vi /etc/lsyncd.conf
 ```
